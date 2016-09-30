@@ -1,0 +1,11 @@
+{
+    "OrigTime": "Int64",
+    "ChannelNo": "uInt16",
+    "SecurityID": "char8",
+    "SecurityIDSource": "char4",
+    "FinancialStatus": "char8",
+    "NoSwitch": {
+        "SecuritySwitchType": "uInt16",
+        "SecuritySwitchStatus": "uInt16"
+    }
+}

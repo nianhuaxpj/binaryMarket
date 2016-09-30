@@ -1,0 +1,17 @@
+{
+    "OrigTime": "Int64",
+    "ChannelNo": "uInt16",
+    "MDStreamID": "char3",
+    "SecurityID": "char8",
+    "SecurityIDSource": "char4",
+    "TradingPhaseCode": "char8",
+    "PrevClosePx": "Int64_4",
+    "NumTrades": "Int64",
+    "TotalVolumeTrade": "Int64_2",
+    "TotalValueTrade": "Int64_4",
+    "NoMDEntries": {
+        "MDEntryType": "char2",
+        "MDEntryPx": "Int64_6",
+        "MDEntrySize": "Int64_2"
+    }
+}

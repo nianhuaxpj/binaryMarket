@@ -1,0 +1,9 @@
+{
+	"SocketConnectHost":"192.168.15.104",
+	"SocketConnectPort":9999,
+	"SenderCompID":"Initiator",
+	"TargetCompID":"N4001Q0004",
+	"HeartBtInt":30,
+	"Password":"N4001Q0004",
+	"DefaultApplVerID":"1.00"
+}
