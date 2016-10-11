@@ -9,9 +9,9 @@
 using std::string;
 //#pragma comment(lib,"ws2_32.lib")
 
-std::once_flag once;
 std::shared_ptr<spdlog::logger> console()
 {
+	static std::once_flag once;
 	static auto cons = spdlog::stdout_logger_mt("console", true);
 	std::call_once(once, [] {cons->set_pattern("[%T.%e] %v"); });
 	return cons;
@@ -19,16 +19,19 @@ std::shared_ptr<spdlog::logger> console()
 
 std::shared_ptr<spdlog::logger> logger()
 {
-	static auto my_logger = spdlog::basic_logger_mt("logger", "log.txt");
-	std::call_once(once, [] {my_logger->set_pattern("[%Y-%M-%d %T.%e] [%l] %v"); });
-	return my_logger;
+	static std::once_flag once;
+	static auto message_logger = spdlog::basic_logger_mt("message", "market_log.txt");
+	//std::call_once(once, [] {message_logger->set_pattern("[%Y-%M-%d %T.%e] %v"); });
+	std::call_once(once, [] {message_logger->set_pattern("%v"); });
+	return message_logger;
 }
 
 std::shared_ptr<spdlog::logger> event()
 {
-	static auto my_logger = spdlog::basic_logger_mt("event", "event.txt");
-	std::call_once(once, [] {my_logger->set_pattern("[%Y-%M-%d %T.%e] [%l] %v"); });
-	return my_logger;
+	static std::once_flag once;
+	static auto event_logger = spdlog::basic_logger_mt("event", "event.txt");
+	std::call_once(once, [] {event_logger->set_pattern("[%Y-%M-%d %T.%e]  %v"); });//[%l]
+	return event_logger;
 }
 
 // 本机大端返回1，小端返回0

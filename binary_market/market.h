@@ -23,9 +23,11 @@ class Market
 
 public:
 	Market();
+	Market(const char* str);
 	void start();
 
 private:
+	void init();
 	void connect();
 	void sendLogon();
 	void setLogoutState();
@@ -40,6 +42,7 @@ private:
 	std::shared_ptr<SessionState>  logoutState { std::make_shared<LogoutState>(this) };
 	std::shared_ptr<SessionState>  logonState{ std::make_shared<LogonState>(this) };
 	std::shared_ptr<SessionState>  halfLogonState{ std::make_shared<HalfLogonState>(this) };
+	void recur(const rapidjson::Value& pattern, const std::string& body, int& pos, rapidjson::Document& output);
 	std::shared_ptr<SessionState> state{ logoutState };
 
 	boost::asio::io_service iosev;
@@ -47,5 +50,6 @@ private:
 	boost::asio::ip::tcp::endpoint ep;
 	std::queue<Message> messages;
 	std::map<UINT32, rapidjson::Document> orders;
+	std::map<std::string, std::string> tag_number;
 	rapidjson::Document config;
 };

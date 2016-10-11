@@ -23,15 +23,23 @@ LogoutState::LogoutState(Market* market) : SessionState(market)
 
 void LogoutState::process()
 {
-	console()->info("LogoutState::process");
-	market->connect();
-	market->sendLogon();
-	market->setHalfLogoutState();
+	event()->info("LogoutState::process");
+	try {
+		market->connect();
+		market->sendLogon();
+		market->setHalfLogoutState();
+	}
+	catch (boost::system::system_error err)
+	{
+		event()->error(err.what());
+		market->setLogoutState();
+		return;
+	}
 }
 
 void HalfLogonState::process()
 {
-	console()->info("HalfLogonState::process");
+	event()->info("HalfLogonState::process");
 	for (;;)
 	{
 		while (!market->messages.empty())
@@ -46,13 +54,13 @@ void HalfLogonState::process()
 			}
 		}
 		char buf[1500];
-		size_t len = market->socket.read_some(boost::asio::buffer(buf, 1500));
 		try {
+			size_t len = market->socket.read_some(boost::asio::buffer(buf, 1500));
 			market->storeMessage(string(buf, len));
 		}
 		catch (const invalid_message& err)
 		{
-			console()->error(err.what());
+			event()->error(err.what());
 			market->setLogoutState();
 			return;
 		}
@@ -62,7 +70,7 @@ void HalfLogonState::process()
 
 void LogonState::process()
 {
-	console()->info("LogonState::process");
+	event()->info("LogonState::process");
 	for (;;)
 	{
 		while (!market->messages.empty())
@@ -81,7 +89,7 @@ void LogonState::process()
 		}
 		catch (const invalid_message& err)
 		{
-			console()->error(err.what());
+			event()->error(err.what());
 			market->setLogoutState();
 			return;
 		}
